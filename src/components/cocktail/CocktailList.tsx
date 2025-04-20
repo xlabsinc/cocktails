@@ -2,7 +2,6 @@
 import React, { useState, useMemo } from 'react';
 import { useCocktail } from '../../context/CocktailContext';
 import CocktailCard from './CocktailCard';
-import { useFuzzySearch } from '../../hooks/useFuzzySearch';
 import { Grid, SearchInput, Section, Title } from '../ui/StyledComponents';
 import { Cocktail } from '../../types/cocktail';
 
@@ -11,25 +10,70 @@ const CocktailList: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [hiddenCocktails, setHiddenCocktails] = useState<Set<string>>(new Set());
 
-  // Use fuzzy search for cocktails
-  const { results } = useFuzzySearch({
-    items: filteredCocktails,
-    keys: ['name', 'ingredients'],
-    threshold: 0.3,
-  });
-
-  // Apply search filter
+  // Apply search filter with strict AND logic
   const displayedCocktails = useMemo(() => {
-    return searchTerm
-      ? results.filter(cocktail => !hiddenCocktails.has(cocktail.name))
-      : filteredCocktails.filter(cocktail => !hiddenCocktails.has(cocktail.name));
-  }, [results, filteredCocktails, searchTerm, hiddenCocktails]);
+    // First filter out hidden cocktails
+    const visibleCocktails = filteredCocktails.filter(cocktail => 
+      !hiddenCocktails.has(cocktail.name)
+    );
+    
+    if (!searchTerm.trim()) {
+      return visibleCocktails;
+    }
+    
+    // Process search terms - check for common liquor/ingredients as keywords
+    const processedSearchTerm = searchTerm.toLowerCase().trim();
+    
+    // Common liquors/ingredients to look for as separate keywords
+    const commonIngredients = [
+      'vodka', 'gin', 'rum', 'tequila', 'whiskey', 'whisky', 'cognac', 'brandy',
+      'liqueur', 'vermouth', 'bitters', 'orange', 'lemon', 'lime', 'juice',
+      'syrup', 'soda', 'tonic', 'wine', 'champagne'
+    ];
+    
+    // Extract keywords from the search term
+    let keywords: string[] = [];
+    
+    // First try to split by space
+    const spaceTerms = processedSearchTerm.split(/\s+/).filter(term => term.length > 0);
+    if (spaceTerms.length > 0) {
+      keywords = spaceTerms;
+    } else {
+      // If no spaces, try to identify common ingredients in the string
+      let remainingTerm = processedSearchTerm;
+      commonIngredients.forEach(ingredient => {
+        if (remainingTerm.includes(ingredient)) {
+          keywords.push(ingredient);
+          // Remove the found ingredient to avoid double matching
+          remainingTerm = remainingTerm.replace(ingredient, '');
+        }
+      });
+      
+      // If we still have text and no keywords were found, use the whole term
+      if (keywords.length === 0 && processedSearchTerm.length > 0) {
+        keywords = [processedSearchTerm];
+      }
+    }
+    
+    return visibleCocktails.filter(cocktail => {
+      // For AND logic, every keyword must match
+      return keywords.every(keyword => {
+        // Check if this keyword is found in the cocktail name
+        if (cocktail.name.toLowerCase().includes(keyword)) {
+          return true;
+        }
+        
+        // Check if this keyword is found in any ingredient
+        return cocktail.ingredients.some(ingredient => 
+          ingredient.toLowerCase().includes(keyword)
+        );
+      });
+    });
+  }, [filteredCocktails, searchTerm, hiddenCocktails]);
 
-  const hideCocktail = (cocktail: Cocktail) => {
+  const _hideCocktail = (cocktail: Cocktail) => {
     setHiddenCocktails(prev => {
-      // Create a new Set with the previous values
       const newSet = new Set(prev);
-      // Add the new cocktail name
       newSet.add(cocktail.name);
       return newSet;
     });
@@ -41,7 +85,7 @@ const CocktailList: React.FC = () => {
       
       <SearchInput
         type="text"
-        placeholder="Search cocktails by name or ingredients..."
+        placeholder="Search cocktails by name and ingredients (AND logic)..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
@@ -54,7 +98,7 @@ const CocktailList: React.FC = () => {
             <CocktailCard
               key={`${cocktail.name}-${index}`}
               cocktail={cocktail}
-              onClose={() => hideCocktail(cocktail)}
+              onClose={() => _hideCocktail(cocktail)}
             />
           ))}
         </Grid>
