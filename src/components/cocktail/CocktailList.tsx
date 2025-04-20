@@ -2,74 +2,19 @@
 import React, { useState, useMemo } from 'react';
 import { useCocktail } from '../../context/CocktailContext';
 import CocktailCard from './CocktailCard';
-import { Grid, SearchInput, Section, Title } from '../ui/StyledComponents';
+import { Grid, Section, Title } from '../ui/StyledComponents';
 import { Cocktail } from '../../types/cocktail';
 
 const CocktailList: React.FC = () => {
   const { filteredCocktails } = useCocktail();
-  const [searchTerm, setSearchTerm] = useState('');
   const [hiddenCocktails, setHiddenCocktails] = useState<Set<string>>(new Set());
 
-  // Apply search filter with strict AND logic
+  // Filter out hidden cocktails
   const displayedCocktails = useMemo(() => {
-    // First filter out hidden cocktails
-    const visibleCocktails = filteredCocktails.filter(cocktail => 
+    return filteredCocktails.filter(cocktail => 
       !hiddenCocktails.has(cocktail.name)
     );
-    
-    if (!searchTerm.trim()) {
-      return visibleCocktails;
-    }
-    
-    // Process search terms - check for common liquor/ingredients as keywords
-    const processedSearchTerm = searchTerm.toLowerCase().trim();
-    
-    // Common liquors/ingredients to look for as separate keywords
-    const commonIngredients = [
-      'vodka', 'gin', 'rum', 'tequila', 'whiskey', 'whisky', 'cognac', 'brandy',
-      'liqueur', 'vermouth', 'bitters', 'orange', 'lemon', 'lime', 'juice',
-      'syrup', 'soda', 'tonic', 'wine', 'champagne'
-    ];
-    
-    // Extract keywords from the search term
-    let keywords: string[] = [];
-    
-    // First try to split by space
-    const spaceTerms = processedSearchTerm.split(/\s+/).filter(term => term.length > 0);
-    if (spaceTerms.length > 0) {
-      keywords = spaceTerms;
-    } else {
-      // If no spaces, try to identify common ingredients in the string
-      let remainingTerm = processedSearchTerm;
-      commonIngredients.forEach(ingredient => {
-        if (remainingTerm.includes(ingredient)) {
-          keywords.push(ingredient);
-          // Remove the found ingredient to avoid double matching
-          remainingTerm = remainingTerm.replace(ingredient, '');
-        }
-      });
-      
-      // If we still have text and no keywords were found, use the whole term
-      if (keywords.length === 0 && processedSearchTerm.length > 0) {
-        keywords = [processedSearchTerm];
-      }
-    }
-    
-    return visibleCocktails.filter(cocktail => {
-      // For AND logic, every keyword must match
-      return keywords.every(keyword => {
-        // Check if this keyword is found in the cocktail name
-        if (cocktail.name.toLowerCase().includes(keyword)) {
-          return true;
-        }
-        
-        // Check if this keyword is found in any ingredient
-        return cocktail.ingredients.some(ingredient => 
-          ingredient.toLowerCase().includes(keyword)
-        );
-      });
-    });
-  }, [filteredCocktails, searchTerm, hiddenCocktails]);
+  }, [filteredCocktails, hiddenCocktails]);
 
   const _hideCocktail = (cocktail: Cocktail) => {
     setHiddenCocktails(prev => {
@@ -82,13 +27,6 @@ const CocktailList: React.FC = () => {
   return (
     <Section>
       <Title style={{ fontSize: '1.5rem' }}>Cocktails</Title>
-      
-      <SearchInput
-        type="text"
-        placeholder="Search cocktails by name and ingredients (AND logic)..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
       
       {displayedCocktails.length === 0 ? (
         <p>No cocktails found. Try selecting different ingredients or adjusting your search.</p>

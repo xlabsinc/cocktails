@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { CocktailProvider, useCocktail } from './context/CocktailContext';
-import IngredientSelector from './components/cocktail/IngredientSelector';
+import UnifiedSearch from './components/cocktail/UnifiedSearch';
 import CocktailList from './components/cocktail/CocktailList';
 import SourceManagement from './components/cocktail/SourceManagement';
 import { AppContainer, Header, Title, Subtitle, Card, Button, Loading, ErrorMessage } from './components/ui/StyledComponents';
@@ -43,7 +43,7 @@ const AppContent: React.FC = () => {
         </Loading>
       ) : (
         <>
-          <IngredientSelector />
+          <UnifiedSearch />
           <CocktailList />
         </>
       )}
