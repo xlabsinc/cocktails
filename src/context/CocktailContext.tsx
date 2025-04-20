@@ -97,13 +97,25 @@ export const CocktailProvider: React.FC<CocktailProviderProps> = ({ children }) 
       return cocktails;
     }
 
-    // Changed to AND logic - cocktail must contain ALL selected ingredients
+    // Modified to check both ingredients AND cocktail names
     return cocktails.filter(cocktail => 
-      selectedIngredientsArray.every(selectedIngredient => 
-        cocktail.ingredients.some(ingredient => 
+      selectedIngredientsArray.every(selectedIngredient => {
+        // First check if the ingredient matches any of the cocktail's ingredients
+        const ingredientMatch = cocktail.ingredients.some(ingredient => 
           ingredient.toLowerCase().includes(selectedIngredient.toLowerCase())
-        )
-      )
+        );
+        
+        // If ingredient matches, return true immediately
+        if (ingredientMatch) return true;
+        
+        // If not an ingredient match, also check the cocktail name
+        // This allows custom text to match cocktail names as well
+        const cocktailNameMatch = cocktail.name.toLowerCase().includes(
+          selectedIngredient.toLowerCase()
+        );
+        
+        return cocktailNameMatch;
+      })
     );
   }, [cocktails, selectedIngredients]);
 
