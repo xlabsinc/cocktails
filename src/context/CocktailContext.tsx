@@ -73,7 +73,8 @@ export const CocktailProvider: React.FC<CocktailProviderProps> = ({ children }) 
   };
 
   const removeSource = (url: string) => {
-    setSources(sources.filter(source => source.url !== url || source.isDefault));
+    // Allow removing any source, including default sources
+    setSources(sources.filter(source => source.url !== url));
   };
 
   const toggleIngredient = (ingredient: string) => {

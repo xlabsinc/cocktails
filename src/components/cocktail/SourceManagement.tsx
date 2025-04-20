@@ -68,14 +68,12 @@ const SourceManagement: React.FC = () => {
                       </span>
                     )}
                   </div>
-                  {!source.isDefault && (
-                    <SecondaryButton 
-                      onClick={() => removeSource(source.url)}
-                      style={{ minWidth: 'auto', padding: '8px 12px' }}
-                    >
-                      Remove
-                    </SecondaryButton>
-                  )}
+                  <SecondaryButton 
+                    onClick={() => removeSource(source.url)}
+                    style={{ minWidth: 'auto', padding: '8px 12px' }}
+                  >
+                    Remove
+                  </SecondaryButton>
                 </div>
               </li>
             ))}
