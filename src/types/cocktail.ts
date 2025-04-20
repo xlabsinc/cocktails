@@ -3,7 +3,7 @@ export interface Cocktail {
   name: string;
   ingredients: string[];
   garnish?: string;
-  preparation?: string;
+  recipe?: string;
   glass?: string;
   image?: string;
 }
