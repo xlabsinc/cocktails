@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/cocktail-js6/static/css/main.2d3a65a7.css",
+    "main.js": "/cocktail-js6/static/js/main.3fdf68d3.js",
+    "static/js/453.519853ff.chunk.js": "/cocktail-js6/static/js/453.519853ff.chunk.js",
+    "index.html": "/cocktail-js6/index.html",
+    "main.2d3a65a7.css.map": "/cocktail-js6/static/css/main.2d3a65a7.css.map",
+    "main.3fdf68d3.js.map": "/cocktail-js6/static/js/main.3fdf68d3.js.map",
+    "453.519853ff.chunk.js.map": "/cocktail-js6/static/js/453.519853ff.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.2d3a65a7.css",
+    "static/js/main.3fdf68d3.js"
+  ]
+}
