@@ -1,46 +1,73 @@
-# Getting Started with Create React App
+# Cocktail Finder
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A responsive React web application for discovering cocktail recipes based on available ingredients. The app uses a modern, Apple-inspired UI design for an intuitive and pleasant user experience.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **Ingredient Search**: Fuzzy search for ingredients and cocktails
+- **Dynamic Cocktail Filtering**: See cocktails that can be made with your selected ingredients
+- **Custom Data Sources**: Add your own cocktail data sources via URLs
+- **Responsive Design**: Works on mobile, tablet and desktop
+- **Apple-style UI**: Clean, modern interface inspired by Apple's design language
 
-### `npm start`
+## Getting Started
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Prerequisites
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- Node.js 14+ installed
 
-### `npm test`
+### Installation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. Clone the repository:
+   ```
+   git clone https://github.com/yourusername/cocktail-js6.git
+   cd cocktail-js6
+   ```
 
-### `npm run build`
+2. Install dependencies:
+   ```
+   npm install
+   ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+3. Start the development server:
+   ```
+   npm start
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+The application will open in your browser at `http://localhost:3000`.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Usage
 
-### `npm run eject`
+1. **Search for ingredients**: Use the search bar to find ingredients you have
+2. **Select ingredients**: Click on ingredients to add them to your selected list
+3. **View matching cocktails**: See all cocktails that can be made with your selections
+4. **Search cocktails**: Use the search bar to filter cocktails by name or ingredients
+5. **Dismiss cocktails**: Click the X to remove a cocktail from view
+6. **Reset**: Click the Reset button to clear all ingredient selections
+7. **Add custom data sources**: Use the Data Sources section to add additional cocktail data URLs
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Deployment
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The application is set up for easy deployment to GitHub Pages:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```
+npm run deploy
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+This will build the application and deploy it to the `gh-pages` branch in your repository.
 
-## Learn More
+## Built With
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- [React](https://reactjs.org/) - The web framework used
+- [TypeScript](https://www.typescriptlang.org/) - Type safety and better development experience
+- [Styled Components](https://styled-components.com/) - For component-based styling
+- [Fuse.js](https://fusejs.io/) - Lightweight fuzzy-search library
+- [Axios](https://axios-http.com/) - Promise-based HTTP client
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- Data sources: [Cocktail API](https://github.com/xbalajipge)
