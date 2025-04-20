@@ -87,7 +87,7 @@ export const CocktailProvider: React.FC<CocktailProviderProps> = ({ children }) 
     setSelectedIngredients({});
   };
 
-  // Filter cocktails based on selected ingredients
+  // Filter cocktails based on selected ingredients using AND logic
   const filteredCocktails = React.useMemo(() => {
     const selectedIngredientsArray = Object.entries(selectedIngredients)
       .filter(([_, isSelected]) => isSelected)
@@ -97,8 +97,9 @@ export const CocktailProvider: React.FC<CocktailProviderProps> = ({ children }) 
       return cocktails;
     }
 
+    // Changed to AND logic - cocktail must contain ALL selected ingredients
     return cocktails.filter(cocktail => 
-      selectedIngredientsArray.some(selectedIngredient => 
+      selectedIngredientsArray.every(selectedIngredient => 
         cocktail.ingredients.some(ingredient => 
           ingredient.toLowerCase().includes(selectedIngredient.toLowerCase())
         )
