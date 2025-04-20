@@ -21,7 +21,6 @@ const UnifiedSearch: React.FC = () => {
   } = useCocktail();
   const [searchTerm, setSearchTerm] = useState('');
   const [_selectedCocktail, _setSelectedCocktail] = useState<Cocktail | null>(null);
-  const [_customIngredients, _setCustomIngredients] = useState<Set<string>>(new Set());
   
   // Use fuzzy search for ingredients
   const { results: filteredIngredients } = useFuzzySearch({
@@ -89,11 +88,6 @@ const UnifiedSearch: React.FC = () => {
     } else {
       // Otherwise add it as a custom ingredient
       const formattedTerm = searchTerm.trim();
-      _setCustomIngredients(prev => {
-        const updated = new Set(prev);
-        updated.add(formattedTerm);
-        return updated;
-      });
       
       // If it's not already in the selected ingredients, add it
       if (!selectedIngredients[formattedTerm]) {
@@ -297,7 +291,6 @@ const UnifiedSearch: React.FC = () => {
               <Button onClick={() => {
                 resetSelections();
                 _setSelectedCocktail(null);
-                _setCustomIngredients(new Set());
               }}>
                 Reset Selection
               </Button>
