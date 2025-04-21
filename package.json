@@ -2,7 +2,7 @@
   "name": "cocktail-js6",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://yourusername.github.io/cocktail-js6",
+  "homepage": "https://xlabsinc.github.io/cocktails",
   "dependencies": {
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
